@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     cors_origins: str = "http://localhost:3000"
     api_v1_prefix: str = "/api/v1"
+    use_database: bool = False
+    database_url: str = ""
+    frontend_url: str = "http://localhost:3000"
 
     @property
     def cors_origins_list(self) -> list[str]:

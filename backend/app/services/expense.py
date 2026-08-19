@@ -4,7 +4,8 @@ from uuid import UUID
 from fastapi import HTTPException, status
 
 from app.repositories.base import ExpenseRepository
-from app.repositories.memory import DEFAULT_USER_ID, expense_repository
+from app.repositories.factory import expense_repository
+from app.repositories.memory import DEFAULT_USER_ID
 from app.schemas.expense import (
     CategorySummary,
     ExpenseCategory,

@@ -39,7 +39,8 @@ app.include_router(stats.router, prefix=settings.api_v1_prefix)
 @app.get("/health", tags=["health"])
 def health_check() -> dict[str, str]:
     """Health check endpoint for Docker and integration tests."""
-    return {"status": "healthy"}
+    storage_mode = "database" if settings.use_database and settings.database_url else "memory"
+    return {"status": "healthy", "storage": storage_mode}
 
 
 @app.exception_handler(StarletteHTTPException)

@@ -11,6 +11,11 @@ Full-stack expense tracking app: FastAPI backend, Next.js frontend, PostgreSQL, 
 | **3** | Integration, Auth & RBAC | Wire frontend↔API↔DB, JWT login, admin/user roles | Pending |
 | **4** | MCP Server | Node.js MCP adapter, API key auth, Cursor config | Pending |
 
+Phase notes:
+- [Phase 1 document](Docs/Phase1_doc.md)
+- [Phase 2 document](Docs/phase2_doc.md)
+- [Codex guide](Docs/codex.md)
+
 ## Architecture
 
 ```
