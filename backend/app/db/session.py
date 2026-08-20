@@ -6,11 +6,12 @@ from typing import Any
 from app.core.config import settings
 
 try:
-    from sqlalchemy import create_engine
+    from sqlalchemy import create_engine, text
     from sqlalchemy.engine import Engine
     from sqlalchemy.orm import sessionmaker
 except ModuleNotFoundError:  # pragma: no cover - optional until dependencies are installed
     create_engine = None  # type: ignore[assignment]
+    text = None  # type: ignore[assignment]
     Engine = Any  # type: ignore[misc,assignment]
     sessionmaker = None  # type: ignore[assignment]
 
@@ -33,3 +34,19 @@ def get_session_factory() -> Any | None:
 def database_available() -> bool:
     return get_engine() is not None and get_session_factory() is not None
 
+
+def ping_database() -> bool:
+    engine = get_engine()
+    if engine is None or text is None:
+        return False
+
+    try:
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+        return True
+    except Exception:
+        return False
+
+
+def database_ready() -> bool:
+    return database_available() and ping_database()

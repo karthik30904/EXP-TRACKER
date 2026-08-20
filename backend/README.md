@@ -15,7 +15,7 @@ Think of this API as a **digital expense notebook** with a smart assistant behin
 3. It **looks up or changes data** in the expense list.
 4. It **sends back a response** — usually JSON (structured text) with the result.
 
-Right now, expenses are stored **in memory** (like a list in the app’s RAM). When the server restarts, seed data reloads and any new entries from that session are lost. In Phase 2, this will move to **PostgreSQL** so data persists permanently.
+The backend now supports both **in-memory** and **database-backed** storage. In development, the app can still fall back to memory if the database is unavailable, but the phase 2 path adds PostgreSQL persistence and phase 3 adds login plus role-based access control.
 
 ---
 
@@ -254,7 +254,7 @@ self._store.append(expense)
 **Non-technical:**  
 A quick “ping” to confirm the server is running. Used by Docker and monitoring tools.
 
-**Technical:** Returns `{"status": "healthy"}` with no database check yet (Phase 2 will extend this).
+**Technical:** Returns the active storage mode and whether the database is reachable when Phase 2 persistence is enabled.
 
 ---
 
@@ -349,9 +349,6 @@ uv run python test_api.py
 
 | Phase | Change | Impact on endpoints |
 |-------|--------|---------------------|
-| 2 — Database | Replace `memory.py` with PostgreSQL | Same URLs; data persists after restart |
-| 3 — Auth | JWT login required | All 6 endpoints need `Authorization: Bearer <token>` |
-| 3 — RBAC | Admin vs user roles | Users see only their expenses; admin sees all |
 | 4 — MCP | Cursor/Claude integration | Same API, called via API key from MCP server |
 
 The **router and service layers stay the same** — only the repository and auth dependencies change. That’s the benefit of the layered design.

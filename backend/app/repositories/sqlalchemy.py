@@ -6,6 +6,7 @@ from decimal import Decimal
 from typing import Any
 from uuid import UUID, uuid4
 
+from app.repositories.seed_data import get_seed_expenses
 from app.schemas.expense import ExpenseCategory, ExpenseCreate, ExpenseUpdate
 
 try:
@@ -158,6 +159,28 @@ class SQLAlchemyExpenseRepository:
             "period_start": start_date,
             "period_end": end_date,
         }
+
+    def ensure_seed_expenses(self) -> None:
+        self._require_ready()
+        with self._session_factory() as session:  # type: ignore[operator]
+            existing = session.execute(select(Expense.id).limit(1)).first()
+            if existing is not None:
+                return
+
+            for seed_expense in get_seed_expenses():
+                session.add(
+                    Expense(
+                        id=str(seed_expense["id"]),
+                        amount=seed_expense["amount"],
+                        description=seed_expense["description"],
+                        category=seed_expense["category"],
+                        date=seed_expense["date"],
+                        user_id=str(seed_expense["user_id"]),
+                        created_at=seed_expense["created_at"],
+                        updated_at=seed_expense["updated_at"],
+                    )
+                )
+            session.commit()
 
 
 def create_sqlalchemy_repository(database_url: str) -> SQLAlchemyExpenseRepository | None:

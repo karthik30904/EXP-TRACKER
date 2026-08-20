@@ -7,14 +7,19 @@ Full-stack expense tracking app: FastAPI backend, Next.js frontend, PostgreSQL, 
 | Phase | Focus | Steps | Status |
 |-------|-------|-------|--------|
 | **1** | Backend API + Observability | FastAPI, 6 endpoints, Swagger, structlog, request tracing | Complete |
-| **2** | UI + Database | Next.js frontend, PostgreSQL + SQLAlchemy + Alembic | Pending |
-| **3** | Integration, Auth & RBAC | Wire frontend↔API↔DB, JWT login, admin/user roles | Pending |
+| **2** | UI + Database | Next.js frontend, PostgreSQL + SQLAlchemy + Alembic | Complete |
+| **3** | Integration, Auth & RBAC | Wire frontend↔API↔DB, JWT login, admin/user roles | Complete |
 | **4** | MCP Server | Node.js MCP adapter, API key auth, Cursor config | Pending |
 
 Phase notes:
 - [Phase 1 document](Docs/Phase1_doc.md)
 - [Phase 2 document](Docs/phase2_doc.md)
+- [Phase 3 document](Docs/phase3_doc.md)
 - [Codex guide](Docs/codex.md)
+- [Frontend core logic](Docs/frontend_core_logic.md)
+- [Backend core logic](Docs/backend_core_logic.md)
+- [Frontend/backend integration](Docs/frontend_backend_integration.md)
+- [Database layer](Docs/database_layer.md)
 
 ## Architecture
 
@@ -43,7 +48,7 @@ Cursor / Claude   ──MCP stdio──► mcp-server ──HTTP+API key──�
 | DELETE | `/api/v1/expenses/{id}` | Delete expense |
 | GET | `/api/v1/stats/summary` | Dashboard totals, by-category breakdown |
 
-Auth routes (Phase 3): `POST /auth/register`, `POST /auth/login`, `GET /auth/me`
+Auth routes: `POST /auth/register`, `POST /auth/login`, `GET /auth/me`
 
 **How the API works:** see [backend/README.md](backend/README.md) for a full guide (non-technical + technical).
 
@@ -71,3 +76,6 @@ uv run uvicorn app.main:app --reload --port 8001
 | `DEBUG` | `false` | Enable FastAPI debug mode |
 | `CORS_ORIGINS` | `http://localhost:3000` | Comma-separated allowed origins |
 | `DATABASE_URL` | — | PostgreSQL connection string (Phase 2) |
+| `AUTH_SECRET_KEY` | `dev-expense-tracker-secret-change-me` | JWT signing key |
+| `ACCESS_TOKEN_MINUTES` | `120` | JWT lifetime in minutes |
+| `SEED_DEMO_ACCOUNTS` | `true` | Seed local demo users and expenses on startup |

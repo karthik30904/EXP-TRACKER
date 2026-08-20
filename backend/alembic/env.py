@@ -15,7 +15,9 @@ if config.config_file_name is not None:
 config.set_main_option("sqlalchemy.url", settings.database_url or config.get_main_option("sqlalchemy.url"))
 
 try:
-    from app.models.expense import Base
+    from app.db.base import Base
+    import app.models.expense  # noqa: F401
+    import app.models.user  # noqa: F401
 except ModuleNotFoundError:  # pragma: no cover - optional until dependencies are installed
     Base = None
 
@@ -48,4 +50,3 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
-
