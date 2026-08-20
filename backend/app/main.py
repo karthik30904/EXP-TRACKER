@@ -6,9 +6,12 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.config import settings
 from app.core.logging import get_logger, setup_logging
+from app.db.session import database_ready
 from app.middleware.logging import RequestLoggingMiddleware
 from app.middleware.request_id import RequestIDMiddleware
-from app.routers import expenses, stats
+from app.routers import auth, expenses, stats
+from app.services.auth import auth_service
+from app.services.expense import expense_service
 
 setup_logging()
 logger = get_logger(__name__)
@@ -34,13 +37,33 @@ app.add_middleware(RequestIDMiddleware)
 
 app.include_router(expenses.router, prefix=settings.api_v1_prefix)
 app.include_router(stats.router, prefix=settings.api_v1_prefix)
+app.include_router(auth.router, prefix=settings.api_v1_prefix)
+
+
+@app.on_event("startup")
+def bootstrap_phase3_demo_data() -> None:
+    if not settings.seed_demo_accounts:
+        return
+
+    for bootstrapper in (
+        getattr(expense_service.repository, "ensure_seed_expenses", None),
+        auth_service.ensure_demo_accounts,
+    ):
+        try:
+            if callable(bootstrapper):
+                bootstrapper()
+        except Exception as exc:  # pragma: no cover - startup safety net
+            logger.warning("bootstrap_skipped", error=str(exc))
 
 
 @app.get("/health", tags=["health"])
-def health_check() -> dict[str, str]:
+def health_check() -> dict[str, str | bool]:
     """Health check endpoint for Docker and integration tests."""
-    storage_mode = "database" if settings.use_database and settings.database_url else "memory"
-    return {"status": "healthy", "storage": storage_mode}
+    using_database = settings.use_database and bool(settings.database_url)
+    storage_mode = "database" if using_database else "memory"
+    database_ok = database_ready() if using_database else False
+    status_value = "healthy" if not using_database or database_ok else "degraded"
+    return {"status": status_value, "storage": storage_mode, "database_ready": database_ok}
 
 
 @app.exception_handler(StarletteHTTPException)

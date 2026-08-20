@@ -26,11 +26,14 @@ This file captures the working rules for Codex on this repository.
 ## Repository Notes
 
 - Phase 1 is the FastAPI backend with in-memory storage.
-- Phase 2 is the database plus frontend phase.
-- Phase 3 adds auth and RBAC.
+- Phase 2 is the database plus frontend phase and is now complete.
+- Phase 3 adds auth and RBAC and is now complete.
 - Phase 4 adds the MCP server integration.
+- Local demo accounts are seeded for `admin@example.com` and `user@example.com`.
+- The frontend reads the JWT from browser storage and sends it on protected requests.
+- The backend owns the auth checks, database access, and role enforcement.
 
 ## Maintenance
 
 - Keep this file short, current, and practical.
-- If a new phase lands, update the phase docs and this guide together.
+- If a new phase lands, update the phase docs, the learning docs, and this guide together.

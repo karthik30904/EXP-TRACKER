@@ -4,71 +4,13 @@ from decimal import Decimal
 from uuid import UUID, uuid4
 
 from app.repositories.base import ExpenseRepository
+from app.repositories.seed_data import DEFAULT_USER_ID, get_seed_expenses
 from app.schemas.expense import ExpenseCategory, ExpenseCreate, ExpenseUpdate
-
-# Default user for Phase 1 (no auth yet)
-DEFAULT_USER_ID = UUID("00000000-0000-0000-0000-000000000001")
-
-
-def _seed_expenses() -> list[dict]:
-    now = datetime.now(UTC)
-    return [
-        {
-            "id": UUID("11111111-1111-1111-1111-111111111111"),
-            "amount": Decimal("45.50"),
-            "description": "Grocery shopping at Whole Foods",
-            "category": ExpenseCategory.FOOD,
-            "date": date(2026, 8, 15),
-            "user_id": DEFAULT_USER_ID,
-            "created_at": now,
-            "updated_at": now,
-        },
-        {
-            "id": UUID("22222222-2222-2222-2222-222222222222"),
-            "amount": Decimal("12.00"),
-            "description": "Uber ride to office",
-            "category": ExpenseCategory.TRANSPORT,
-            "date": date(2026, 8, 16),
-            "user_id": DEFAULT_USER_ID,
-            "created_at": now,
-            "updated_at": now,
-        },
-        {
-            "id": UUID("33333333-3333-3333-3333-333333333333"),
-            "amount": Decimal("89.99"),
-            "description": "Netflix + Spotify subscription",
-            "category": ExpenseCategory.ENTERTAINMENT,
-            "date": date(2026, 8, 1),
-            "user_id": DEFAULT_USER_ID,
-            "created_at": now,
-            "updated_at": now,
-        },
-        {
-            "id": UUID("44444444-4444-4444-4444-444444444444"),
-            "amount": Decimal("250.00"),
-            "description": "Electricity bill",
-            "category": ExpenseCategory.BILLS,
-            "date": date(2026, 8, 10),
-            "user_id": DEFAULT_USER_ID,
-            "created_at": now,
-            "updated_at": now,
-        },
-        {
-            "id": UUID("55555555-5555-5555-5555-555555555555"),
-            "amount": Decimal("35.00"),
-            "description": "Coffee with friends",
-            "category": ExpenseCategory.FOOD,
-            "date": date(2026, 8, 17),
-            "user_id": DEFAULT_USER_ID,
-            "created_at": now,
-            "updated_at": now,
-        },
-    ]
 
 
 class InMemoryExpenseRepository(ExpenseRepository):
     def __init__(self) -> None:
-        self._store: list[dict] = _seed_expenses()
+        self._store: list[dict] = get_seed_expenses()
 
     def list_expenses(
         self,

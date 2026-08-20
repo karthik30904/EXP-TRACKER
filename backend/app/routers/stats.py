@@ -1,7 +1,9 @@
 from datetime import date
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query
 
+from app.deps import get_current_user
+from app.schemas.auth import AuthUser
 from app.schemas.expense import SummaryResponse
 from app.services.expense import expense_service
 
@@ -10,8 +12,9 @@ router = APIRouter(prefix="/stats", tags=["stats"])
 
 @router.get("/summary", response_model=SummaryResponse)
 def get_summary(
+    current_user: AuthUser = Depends(get_current_user),
     start_date: date | None = Query(default=None, description="Summary start date"),
     end_date: date | None = Query(default=None, description="Summary end date"),
 ) -> SummaryResponse:
     """Get expense summary with totals and category breakdown."""
-    return expense_service.get_summary(start_date=start_date, end_date=end_date)
+    return expense_service.get_summary(current_user=current_user, start_date=start_date, end_date=end_date)

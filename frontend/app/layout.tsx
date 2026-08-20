@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Expense Tracker",
-  description: "A polished expense dashboard for the Phase 2 build.",
+  description: "A polished expense dashboard with database-backed data, JWT auth, and role-aware access.",
 };
 
 export default function RootLayout({
