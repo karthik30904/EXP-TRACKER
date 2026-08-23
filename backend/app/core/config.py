@@ -12,14 +12,9 @@ class Settings(BaseSettings):
     use_database: bool = False
     database_url: str = ""
     frontend_url: str = "http://localhost:3000"
-    auth_secret_key: str = "dev-expense-tracker-secret-change-me"
-    auth_algorithm: str = "HS256"
-    access_token_minutes: int = 120
-    seed_demo_accounts: bool = True
-    demo_admin_email: str = "admin@example.com"
-    demo_admin_password: str = "Admin123!"
-    demo_user_email: str = "user@example.com"
-    demo_user_password: str = "User123!"
+    jwt_secret_key: str = "dev-secret-key-change-in-production-1234567890"
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 1440
 
     @property
     def cors_origins_list(self) -> list[str]:

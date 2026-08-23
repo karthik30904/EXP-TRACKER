@@ -18,10 +18,24 @@ def _build_database_repository() -> ExpenseRepository | None:
         return None
 
     try:
+        from sqlalchemy import inspect
+        from app.db.session import get_engine
         from app.repositories.sqlalchemy import create_sqlalchemy_repository
     except ModuleNotFoundError:
         logger.warning("sqlalchemy_unavailable_falling_back_to_memory")
         return None
+
+    engine = get_engine()
+    if engine is not None:
+        try:
+            columns = {column["name"] for column in inspect(engine).get_columns("expenses")}
+            if "transaction_date" in columns:
+                from app.repositories.legacy_postgres import LegacyPostgresExpenseRepository
+
+                logger.info("using_legacy_expenses_repository")
+                return LegacyPostgresExpenseRepository()
+        except Exception:
+            logger.warning("database_schema_inspection_failed")
 
     repository = create_sqlalchemy_repository(settings.database_url)
     if repository is None:

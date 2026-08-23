@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserRole(str, Enum):
@@ -12,17 +12,14 @@ class UserRole(str, Enum):
     ADMIN = "admin"
 
 
-class UserBase(BaseModel):
-    email: str = Field(..., min_length=3, max_length=255, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-    full_name: str = Field(..., min_length=1, max_length=120)
-
-
-class UserCreate(UserBase):
-    password: str = Field(..., min_length=8, max_length=128)
+class UserRegister(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=6, description="Password must be at least 6 characters")
+    full_name: str | None = Field(default=None, max_length=100)
 
 
 class UserLogin(BaseModel):
-    email: str = Field(..., min_length=3, max_length=255, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+    email: EmailStr
     password: str
 
 
@@ -31,14 +28,10 @@ class UserResponse(BaseModel):
 
     id: UUID
     email: str
-    full_name: str
+    full_name: str | None = None
     role: UserRole
+    is_active: bool
     created_at: datetime
-    updated_at: datetime
-
-
-class AuthUser(UserResponse):
-    pass
 
 
 class TokenResponse(BaseModel):

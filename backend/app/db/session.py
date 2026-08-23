@@ -11,9 +11,9 @@ try:
     from sqlalchemy.orm import sessionmaker
 except ModuleNotFoundError:  # pragma: no cover - optional until dependencies are installed
     create_engine = None  # type: ignore[assignment]
-    text = None  # type: ignore[assignment]
     Engine = Any  # type: ignore[misc,assignment]
     sessionmaker = None  # type: ignore[assignment]
+    text = None  # type: ignore[assignment]
 
 
 @lru_cache(maxsize=1)
@@ -35,7 +35,8 @@ def database_available() -> bool:
     return get_engine() is not None and get_session_factory() is not None
 
 
-def ping_database() -> bool:
+def database_ready() -> bool:
+    """Return whether the configured database accepts a lightweight query."""
     engine = get_engine()
     if engine is None or text is None:
         return False
@@ -43,10 +44,7 @@ def ping_database() -> bool:
     try:
         with engine.connect() as connection:
             connection.execute(text("SELECT 1"))
-        return True
     except Exception:
         return False
+    return True
 
-
-def database_ready() -> bool:
-    return database_available() and ping_database()

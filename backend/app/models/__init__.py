@@ -1,3 +1,4 @@
-from app.db.base import Base
-from app.models.expense import Expense
+from app.models.expense import Base, Expense
 from app.models.user import User
+
+__all__ = ["Base", "Expense", "User"]

@@ -1,107 +1,58 @@
 from __future__ import annotations
 
-import base64
-import hashlib
-import hmac
-import json
-import secrets
 from datetime import UTC, datetime, timedelta
 from typing import Any
+import bcrypt
+import jwt
 
 from app.core.config import settings
 
-PASSWORD_ITERATIONS = 210_000
+
+def hash_password(password: str) -> str:
+    """Hash a plaintext password with bcrypt."""
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 
-def _base64url_encode(data: bytes) -> str:
-    return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
-
-
-def _base64url_decode(data: str) -> bytes:
-    padding = "=" * (-len(data) % 4)
-    return base64.urlsafe_b64decode(data + padding)
-
-
-def _json_dumps(payload: dict[str, Any]) -> bytes:
-    return json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
-
-
-def hash_password(password: str, *, salt: bytes | None = None) -> str:
-    raw_salt = salt or secrets.token_bytes(16)
-    derived = hashlib.pbkdf2_hmac(
-        "sha256",
-        password.encode("utf-8"),
-        raw_salt,
-        PASSWORD_ITERATIONS,
-    )
-    return "pbkdf2_sha256${iterations}${salt}${hash}".format(
-        iterations=PASSWORD_ITERATIONS,
-        salt=_base64url_encode(raw_salt),
-        hash=_base64url_encode(derived),
-    )
-
-
-def verify_password(password: str, password_hash: str) -> bool:
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a plaintext password against a bcrypt hash."""
     try:
-        algorithm, iterations, salt, expected_hash = password_hash.split("$", 3)
-        if algorithm != "pbkdf2_sha256":
-            return False
-        derived = hashlib.pbkdf2_hmac(
-            "sha256",
-            password.encode("utf-8"),
-            _base64url_decode(salt),
-            int(iterations),
+        return bcrypt.checkpw(
+            plain_password.encode("utf-8"),
+            hashed_password.encode("utf-8"),
         )
-        return hmac.compare_digest(_base64url_encode(derived), expected_hash)
     except Exception:
         return False
 
 
 def create_access_token(
-    *,
-    subject: str,
-    role: str,
+    data: dict[str, Any],
     expires_delta: timedelta | None = None,
 ) -> str:
-    expires = datetime.now(UTC) + (expires_delta or timedelta(minutes=settings.access_token_minutes))
-    header = {"alg": settings.auth_algorithm, "typ": "JWT"}
-    payload = {
-        "sub": subject,
-        "role": role,
-        "iat": int(datetime.now(UTC).timestamp()),
-        "exp": int(expires.timestamp()),
-    }
-    signing_input = ".".join(
-        [
-            _base64url_encode(_json_dumps(header)),
-            _base64url_encode(_json_dumps(payload)),
-        ]
-    ).encode("ascii")
-    signature = hmac.new(
-        settings.auth_secret_key.encode("utf-8"),
-        signing_input,
-        hashlib.sha256,
-    ).digest()
-    return f"{signing_input.decode('ascii')}.{_base64url_encode(signature)}"
+    """Create an encoded JWT access token with expiration."""
+    to_encode = data.copy()
+    now = datetime.now(UTC)
+    if expires_delta is not None:
+        expire = now + expires_delta
+    else:
+        expire = now + timedelta(minutes=settings.access_token_expire_minutes)
+
+    to_encode.update({"exp": expire, "iat": now})
+    return jwt.encode(
+        to_encode,
+        settings.jwt_secret_key,
+        algorithm=settings.jwt_algorithm,
+    )
 
 
-def decode_access_token(token: str) -> dict[str, Any]:
+def decode_access_token(token: str) -> dict[str, Any] | None:
+    """Decode and validate a JWT access token."""
     try:
-        header_b64, payload_b64, signature_b64 = token.split(".")
-        signing_input = f"{header_b64}.{payload_b64}".encode("ascii")
-        expected = hmac.new(
-            settings.auth_secret_key.encode("utf-8"),
-            signing_input,
-            hashlib.sha256,
-        ).digest()
-        actual = _base64url_decode(signature_b64)
-        if not hmac.compare_digest(expected, actual):
-            raise ValueError("Invalid token signature")
-
-        payload = json.loads(_base64url_decode(payload_b64))
-        expires_at = datetime.fromtimestamp(int(payload["exp"]), tz=UTC)
-        if expires_at < datetime.now(UTC):
-            raise ValueError("Token expired")
+        payload = jwt.decode(
+            token,
+            settings.jwt_secret_key,
+            algorithms=[settings.jwt_algorithm],
+        )
         return payload
-    except Exception as exc:
-        raise ValueError("Invalid access token") from exc
+    except (jwt.PyJWTError, Exception):
+        return None
