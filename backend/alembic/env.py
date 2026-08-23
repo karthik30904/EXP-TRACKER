@@ -12,7 +12,10 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-config.set_main_option("sqlalchemy.url", settings.database_url or config.get_main_option("sqlalchemy.url"))
+# ConfigParser reserves `%` for interpolation. Escape URL-encoded password characters
+# before handing the connection string to Alembic; SQLAlchemy receives the original URL.
+database_url = settings.database_url or config.get_main_option("sqlalchemy.url")
+config.set_main_option("sqlalchemy.url", database_url.replace("%", "%%"))
 
 try:
     from app.models.expense import Base

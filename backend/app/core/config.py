@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     use_database: bool = False
     database_url: str = ""
     frontend_url: str = "http://localhost:3000"
+    jwt_secret_key: str = "dev-secret-key-change-in-production-1234567890"
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 1440
 
     @property
     def cors_origins_list(self) -> list[str]:

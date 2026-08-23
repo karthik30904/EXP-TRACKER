@@ -1,0 +1,21 @@
+{"method": "GET", "path": "/health", "request_id": "481302f9-c022-4a63-9045-776d561b2218", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.682915Z"}
+{"method": "GET", "path": "/health", "status_code": 200, "duration_ms": 23.59, "request_id": "481302f9-c022-4a63-9045-776d561b2218", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.706220Z"}
+INFO:     127.0.0.1:57080 - "GET /health HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/expenses", "request_id": "5de445f6-f8e0-455d-b926-5864cbfff517", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.710731Z"}
+{"method": "GET", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 39.05, "request_id": "5de445f6-f8e0-455d-b926-5864cbfff517", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.749773Z"}
+INFO:     127.0.0.1:57081 - "GET /api/v1/expenses HTTP/1.1" 200 OK
+{"method": "POST", "path": "/api/v1/expenses", "request_id": "851ecb4c-5e26-4d33-8050-47bd9ee87180", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.752150Z"}
+{"method": "POST", "path": "/api/v1/expenses", "status_code": 201, "duration_ms": 11.98, "request_id": "851ecb4c-5e26-4d33-8050-47bd9ee87180", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.764118Z"}
+INFO:     127.0.0.1:57082 - "POST /api/v1/expenses HTTP/1.1" 201 Created
+{"method": "GET", "path": "/api/v1/expenses/2798a14f-b9a8-446b-b788-300e3b74eb22", "request_id": "a07509f5-4184-4542-a828-2e167577fa89", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.767008Z"}
+{"method": "GET", "path": "/api/v1/expenses/2798a14f-b9a8-446b-b788-300e3b74eb22", "status_code": 200, "duration_ms": 3.47, "request_id": "a07509f5-4184-4542-a828-2e167577fa89", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.770441Z"}
+INFO:     127.0.0.1:57083 - "GET /api/v1/expenses/2798a14f-b9a8-446b-b788-300e3b74eb22 HTTP/1.1" 200 OK
+{"method": "PATCH", "path": "/api/v1/expenses/2798a14f-b9a8-446b-b788-300e3b74eb22", "request_id": "a750bfba-3fea-4bfc-aa09-e626e2126ced", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.772369Z"}
+{"method": "PATCH", "path": "/api/v1/expenses/2798a14f-b9a8-446b-b788-300e3b74eb22", "status_code": 200, "duration_ms": 8.74, "request_id": "a750bfba-3fea-4bfc-aa09-e626e2126ced", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.781129Z"}
+INFO:     127.0.0.1:57084 - "PATCH /api/v1/expenses/2798a14f-b9a8-446b-b788-300e3b74eb22 HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/stats/summary", "request_id": "e81ce386-3c48-4874-b8cd-6efe4a55bb9e", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.784213Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "status_code": 200, "duration_ms": 10.37, "request_id": "e81ce386-3c48-4874-b8cd-6efe4a55bb9e", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.794538Z"}
+INFO:     127.0.0.1:57085 - "GET /api/v1/stats/summary HTTP/1.1" 200 OK
+{"method": "DELETE", "path": "/api/v1/expenses/2798a14f-b9a8-446b-b788-300e3b74eb22", "request_id": "77e3dc56-8c8f-4418-a765-5a7dbbb87ccf", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.796472Z"}
+{"method": "DELETE", "path": "/api/v1/expenses/2798a14f-b9a8-446b-b788-300e3b74eb22", "status_code": 204, "duration_ms": 7.26, "request_id": "77e3dc56-8c8f-4418-a765-5a7dbbb87ccf", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-22T19:24:41.803733Z"}
+INFO:     127.0.0.1:57086 - "DELETE /api/v1/expenses/2798a14f-b9a8-446b-b788-300e3b74eb22 HTTP/1.1" 204 No Content

@@ -19,27 +19,28 @@ Phase 1 is useful for proving the API shape, but it does not keep data after a r
 - making the backend ready for auth in Phase 3
 - giving users a browser-based experience
 
-## Planned Scope
+## Delivered Scope
 
 ### Database
 
-- Add PostgreSQL connection settings
-- Introduce SQLAlchemy engine and session handling
-- Create an `Expense` table that matches the current schema
-- Add Alembic migrations for initial schema creation
-- Keep repository methods aligned with the current service layer
+- PostgreSQL connection settings via `DATABASE_URL` and `USE_DATABASE`
+- SQLAlchemy engine and session handling
+- An `Expense` table matching the API schema
+- Alembic initial migration (`0001_phase2_initial_expenses`)
+- A swappable SQLAlchemy repository aligned with the existing service layer
+- A health check that reports database readiness when database mode is enabled
 
 ### Frontend
 
-- Create a Next.js app shell
-- Build an expenses list view
-- Add create and edit expense forms
-- Add a summary dashboard
-- Prepare API calls to the FastAPI backend
+- Next.js app shell
+- Expense list view
+- Create and edit expense forms
+- Summary dashboard
+- API calls to the FastAPI backend, configured with `NEXT_PUBLIC_API_BASE_URL`
 
 ### Backend Adjustments
 
-- Replace `memory.py` with a database repository implementation
+- Select the database repository with `USE_DATABASE=true` while retaining the in-memory fallback
 - Keep the existing routes stable
 - Preserve validation and response models
 - Extend health checks to include database readiness
@@ -65,15 +66,32 @@ The database layer should mirror the existing expense object:
 - `backend/app/repositories/sqlalchemy.py` for persistent storage
 - `backend/alembic/` for migrations
 
-## Acceptance Criteria
+## Acceptance Criteria and Verification
 
 Phase 2 is done when:
 
-- expenses survive backend restarts
-- the frontend can list and create expenses
-- summary data comes from PostgreSQL
-- the repository layer remains swappable
-- the API routes still behave the same for clients
+| Criterion | Implementation status | Verification status |
+|---|---|---|
+| Expenses survive backend restarts | SQLAlchemy repository, migration, and seed script are present | Requires a running PostgreSQL instance |
+| Frontend lists, creates, and edits expenses | Implemented in `frontend/app/page.tsx` | Production build passes |
+| Summary data comes from the database | Summary delegates through the selected repository | Requires a running PostgreSQL instance |
+| Repository remains swappable | Memory fallback and database factory are present | Code-reviewed |
+| API routes retain their contract | Existing routers and Pydantic responses are unchanged | Runtime test blocked locally by Python runtime permissions |
+
+### Test Commands
+
+```bash
+cd backend
+USE_DATABASE=true DATABASE_URL="postgresql+psycopg://USER:PASSWORD@localhost:5432/expense_tracker" uv run alembic upgrade head
+USE_DATABASE=true DATABASE_URL="postgresql+psycopg://USER:PASSWORD@localhost:5432/expense_tracker" uv run python seed_db.py
+USE_DATABASE=true DATABASE_URL="postgresql+psycopg://USER:PASSWORD@localhost:5432/expense_tracker" uv run uvicorn app.main:app --port 8001
+uv run python test_integration.py
+
+cd ../frontend
+npm run build
+```
+
+The repository contains API smoke and end-to-end HTTP scripts (`backend/test_api.py` and `backend/test_integration.py`). There is no isolated frontend unit/component test suite yet; add one in Phase 3 when authentication changes the UI state model.
 
 ## Risks To Watch
 

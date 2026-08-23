@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, status
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -6,9 +7,10 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.config import settings
 from app.core.logging import get_logger, setup_logging
+from app.db.session import database_ready
 from app.middleware.logging import RequestLoggingMiddleware
 from app.middleware.request_id import RequestIDMiddleware
-from app.routers import expenses, stats
+from app.routers import auth, expenses, stats
 
 setup_logging()
 logger = get_logger(__name__)
@@ -32,6 +34,7 @@ app.add_middleware(
 app.add_middleware(RequestLoggingMiddleware)
 app.add_middleware(RequestIDMiddleware)
 
+app.include_router(auth.router, prefix=settings.api_v1_prefix)
 app.include_router(expenses.router, prefix=settings.api_v1_prefix)
 app.include_router(stats.router, prefix=settings.api_v1_prefix)
 
@@ -39,8 +42,16 @@ app.include_router(stats.router, prefix=settings.api_v1_prefix)
 @app.get("/health", tags=["health"])
 def health_check() -> dict[str, str]:
     """Health check endpoint for Docker and integration tests."""
-    storage_mode = "database" if settings.use_database and settings.database_url else "memory"
-    return {"status": "healthy", "storage": storage_mode}
+    database_enabled = settings.use_database and bool(settings.database_url)
+    if database_enabled and not database_ready():
+        return {"status": "degraded", "storage": "database", "database": "unavailable"}
+
+    storage_mode = "database" if database_enabled else "memory"
+    return {
+        "status": "healthy",
+        "storage": storage_mode,
+        "database": "ready" if database_enabled else "not_configured",
+    }
 
 
 @app.exception_handler(StarletteHTTPException)
@@ -71,7 +82,7 @@ async def validation_exception_handler(
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={
-            "detail": exc.errors(),
+            "detail": jsonable_encoder(exc.errors()),
             "request_id": request_id,
             "type": "ValidationError",
         },

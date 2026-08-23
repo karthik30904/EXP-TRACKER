@@ -1,0 +1,124 @@
+2026-08-23 15:49:59 [info     ] using_legacy_expenses_repository
+{"method": "DELETE", "path": "/api/v1/expenses/8478cfd1-ef34-5ca4-85c4-e8cd913cce46", "request_id": "18150f96-9315-47d6-90e5-a21577763a4d", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:20:02.230078Z"}
+{"method": "DELETE", "path": "/api/v1/expenses/8478cfd1-ef34-5ca4-85c4-e8cd913cce46", "status_code": 204, "duration_ms": 18.63, "request_id": "18150f96-9315-47d6-90e5-a21577763a4d", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:20:02.248662Z"}
+INFO:     127.0.0.1:54499 - "DELETE /api/v1/expenses/8478cfd1-ef34-5ca4-85c4-e8cd913cce46 HTTP/1.1" 204 No Content
+{"method": "GET", "path": "/health", "request_id": "b7b35ff4-de14-4ebc-949f-e0e99a9cd03f", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:20:02.294463Z"}
+{"method": "GET", "path": "/health", "status_code": 200, "duration_ms": 3.72, "request_id": "b7b35ff4-de14-4ebc-949f-e0e99a9cd03f", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:20:02.298159Z"}
+INFO:     127.0.0.1:54500 - "GET /health HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/expenses", "request_id": "261aa712-666d-4b3c-b2f8-898772a0e72c", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:21:58.430529Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "request_id": "9600f974-07bc-45ea-a21f-e6f0b2cc9db8", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:21:58.432628Z"}
+{"method": "GET", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 25.12, "request_id": "261aa712-666d-4b3c-b2f8-898772a0e72c", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:21:58.455603Z"}
+INFO:     127.0.0.1:49212 - "GET /api/v1/expenses HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/stats/summary", "status_code": 200, "duration_ms": 55.27, "request_id": "9600f974-07bc-45ea-a21f-e6f0b2cc9db8", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:21:58.487861Z"}
+INFO:     127.0.0.1:63604 - "GET /api/v1/stats/summary HTTP/1.1" 200 OK
+{"method": "PATCH", "path": "/api/v1/expenses/d9a796fd-5328-586d-aa22-785cab6580bb", "request_id": "b6cbe7e3-9223-4726-86f2-f2a1365c1b6c", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:06.009364Z"}
+{"method": "PATCH", "path": "/api/v1/expenses/d9a796fd-5328-586d-aa22-785cab6580bb", "status_code": 200, "duration_ms": 25.06, "request_id": "b6cbe7e3-9223-4726-86f2-f2a1365c1b6c", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:06.034386Z"}
+INFO:     127.0.0.1:59371 - "PATCH /api/v1/expenses/d9a796fd-5328-586d-aa22-785cab6580bb HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/expenses", "request_id": "1bab9ac1-da08-4d34-a730-656f5b25bcc5", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:06.045991Z"}
+{"method": "GET", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 12.42, "request_id": "1bab9ac1-da08-4d34-a730-656f5b25bcc5", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:06.058844Z"}
+INFO:     127.0.0.1:59371 - "GET /api/v1/expenses HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/stats/summary", "request_id": "e2084f61-1947-4b17-b36c-0cd09b82f033", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:06.063461Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "status_code": 200, "duration_ms": 10.54, "request_id": "e2084f61-1947-4b17-b36c-0cd09b82f033", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:06.073925Z"}
+INFO:     127.0.0.1:59371 - "GET /api/v1/stats/summary HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/expenses", "request_id": "c2e73172-825d-4d41-bc2c-43e7b96b4116", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:15.005441Z"}
+{"method": "GET", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 16.04, "request_id": "c2e73172-825d-4d41-bc2c-43e7b96b4116", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:15.021454Z"}
+INFO:     127.0.0.1:64956 - "GET /api/v1/expenses HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/stats/summary", "request_id": "7db2ecd0-6c77-4681-bac9-338814d9e68d", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:15.024727Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "status_code": 200, "duration_ms": 7.02, "request_id": "7db2ecd0-6c77-4681-bac9-338814d9e68d", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:22:15.031731Z"}
+INFO:     127.0.0.1:64956 - "GET /api/v1/stats/summary HTTP/1.1" 200 OK
+{"method": "OPTIONS", "path": "/api/v1/expenses", "request_id": "97a75eb1-a6eb-459f-b46f-90fa491977c9", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:09.946133Z"}
+{"method": "OPTIONS", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 2.28, "request_id": "97a75eb1-a6eb-459f-b46f-90fa491977c9", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:09.948380Z"}
+INFO:     127.0.0.1:61000 - "OPTIONS /api/v1/expenses HTTP/1.1" 200 OK
+{"method": "POST", "path": "/api/v1/expenses", "request_id": "dbf9117e-0701-400e-9bc2-fe36810975b7", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:09.950835Z"}
+{"method": "POST", "path": "/api/v1/expenses", "status_code": 201, "duration_ms": 10.32, "request_id": "dbf9117e-0701-400e-9bc2-fe36810975b7", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:09.961154Z"}
+INFO:     127.0.0.1:61000 - "POST /api/v1/expenses HTTP/1.1" 201 Created
+{"method": "GET", "path": "/api/v1/expenses", "request_id": "ba90c9a0-4b03-45f3-832b-2308c487b2dd", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:09.964241Z"}
+{"method": "GET", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 3.33, "request_id": "ba90c9a0-4b03-45f3-832b-2308c487b2dd", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:09.967562Z"}
+INFO:     127.0.0.1:61000 - "GET /api/v1/expenses HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/stats/summary", "request_id": "619b3de5-a806-49a5-b476-eb4dcd172409", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:09.970331Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "status_code": 200, "duration_ms": 3.08, "request_id": "619b3de5-a806-49a5-b476-eb4dcd172409", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:09.973397Z"}
+INFO:     127.0.0.1:61000 - "GET /api/v1/stats/summary HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/expenses", "request_id": "d12127c3-58d8-4d0e-927f-4e7af7f6f34c", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:40.213070Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "request_id": "9a9b9ea5-0b98-4987-925b-d2138438b66d", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:40.215922Z"}
+{"method": "GET", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 8.82, "request_id": "d12127c3-58d8-4d0e-927f-4e7af7f6f34c", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:40.221863Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "status_code": 200, "duration_ms": 6.66, "request_id": "9a9b9ea5-0b98-4987-925b-d2138438b66d", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:33:40.222551Z"}
+INFO:     127.0.0.1:53690 - "GET /api/v1/expenses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57830 - "GET /api/v1/stats/summary HTTP/1.1" 200 OK
+{"method": "GET", "path": "/health", "request_id": "62c51562-a988-441b-ac7c-59be70b4ccf1", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:19.013098Z"}
+{"method": "GET", "path": "/health", "status_code": 200, "duration_ms": 4.2, "request_id": "62c51562-a988-441b-ac7c-59be70b4ccf1", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:19.017240Z"}
+INFO:     127.0.0.1:57958 - "GET /health HTTP/1.1" 200 OK
+{"method": "GET", "path": "/docs", "request_id": "666fd00f-d94f-443d-ab48-689dd8978598", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:43.655205Z"}
+{"method": "GET", "path": "/docs", "status_code": 200, "duration_ms": 1.33, "request_id": "666fd00f-d94f-443d-ab48-689dd8978598", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:43.656518Z"}
+INFO:     127.0.0.1:55263 - "GET /docs HTTP/1.1" 200 OK
+{"method": "GET", "path": "/openapi.json", "request_id": "1f755e9d-cbd2-4f85-b31c-0fffb5405750", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:43.817155Z"}
+{"method": "GET", "path": "/openapi.json", "status_code": 200, "duration_ms": 31.12, "request_id": "1f755e9d-cbd2-4f85-b31c-0fffb5405750", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:43.848247Z"}
+INFO:     127.0.0.1:55263 - "GET /openapi.json HTTP/1.1" 200 OK
+{"method": "GET", "path": "/health", "request_id": "5e10919e-86b2-4ac6-92f4-e253d5614cdc", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:48.908010Z"}
+{"method": "GET", "path": "/health", "status_code": 200, "duration_ms": 3.66, "request_id": "5e10919e-86b2-4ac6-92f4-e253d5614cdc", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:48.911659Z"}
+INFO:     127.0.0.1:61676 - "GET /health HTTP/1.1" 200 OK
+{"method": "GET", "path": "/docs", "request_id": "acded20f-3a36-436b-a181-6e3a29bade2e", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:59.964410Z"}
+{"method": "GET", "path": "/docs", "status_code": 200, "duration_ms": 2.38, "request_id": "acded20f-3a36-436b-a181-6e3a29bade2e", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:40:59.966768Z"}
+INFO:     127.0.0.1:52930 - "GET /docs HTTP/1.1" 200 OK
+{"method": "GET", "path": "/openapi.json", "request_id": "cf9cc62b-174b-4c2c-bdcd-27090da25e9a", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:41:00.083528Z"}
+{"method": "GET", "path": "/openapi.json", "status_code": 200, "duration_ms": 1.03, "request_id": "cf9cc62b-174b-4c2c-bdcd-27090da25e9a", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:41:00.084546Z"}
+INFO:     127.0.0.1:52930 - "GET /openapi.json HTTP/1.1" 200 OK
+{"method": "GET", "path": "/health", "request_id": "1f7652a2-17de-4410-9e32-8d3cea6ae332", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:41:04.562212Z"}
+{"method": "GET", "path": "/health", "status_code": 200, "duration_ms": 4.55, "request_id": "1f7652a2-17de-4410-9e32-8d3cea6ae332", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T10:41:04.566746Z"}
+INFO:     127.0.0.1:52930 - "GET /health HTTP/1.1" 200 OK
+{"method": "OPTIONS", "path": "/api/v1/expenses", "request_id": "00b4ca31-69b8-411d-b2d2-ece800f559ab", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:03:05.016974Z"}
+{"method": "OPTIONS", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 1.81, "request_id": "00b4ca31-69b8-411d-b2d2-ece800f559ab", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:03:05.018783Z"}
+INFO:     127.0.0.1:60238 - "OPTIONS /api/v1/expenses HTTP/1.1" 200 OK
+{"method": "POST", "path": "/api/v1/expenses", "request_id": "391c6585-ed4e-44ef-b777-93c25d576ef5", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:03:05.022541Z"}
+{"method": "POST", "path": "/api/v1/expenses", "status_code": 201, "duration_ms": 5.05, "request_id": "391c6585-ed4e-44ef-b777-93c25d576ef5", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:03:05.027585Z"}
+INFO:     127.0.0.1:60238 - "POST /api/v1/expenses HTTP/1.1" 201 Created
+{"method": "GET", "path": "/api/v1/expenses", "request_id": "aeb92646-74c7-49f1-8605-97d96a40e157", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:03:05.031110Z"}
+{"method": "GET", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 3.44, "request_id": "aeb92646-74c7-49f1-8605-97d96a40e157", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:03:05.034505Z"}
+INFO:     127.0.0.1:60238 - "GET /api/v1/expenses HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/stats/summary", "request_id": "06b6f31e-25ed-4dae-b378-666c60b14bec", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:03:05.036829Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "status_code": 200, "duration_ms": 4.43, "request_id": "06b6f31e-25ed-4dae-b378-666c60b14bec", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:03:05.041243Z"}
+INFO:     127.0.0.1:60238 - "GET /api/v1/stats/summary HTTP/1.1" 200 OK
+{"method": "GET", "path": "/api/v1/expenses", "request_id": "e9e5c9c8-fd48-4453-a2ab-a25f4b887a22", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:08:56.300626Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "request_id": "30a650e9-7563-475a-86fb-0830e4a1107a", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:08:56.303888Z"}
+{"method": "GET", "path": "/api/v1/expenses", "status_code": 200, "duration_ms": 8.7, "request_id": "e9e5c9c8-fd48-4453-a2ab-a25f4b887a22", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:08:56.309034Z"}
+{"method": "GET", "path": "/api/v1/stats/summary", "status_code": 200, "duration_ms": 5.75, "request_id": "30a650e9-7563-475a-86fb-0830e4a1107a", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:08:56.309506Z"}
+INFO:     127.0.0.1:55393 - "GET /api/v1/expenses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55941 - "GET /api/v1/stats/summary HTTP/1.1" 200 OK
+{"method": "GET", "path": "/openapi.json", "request_id": "b93b3d1b-9ef6-4b29-9ee4-0ee448ab5558", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:09:49.884079Z"}
+{"method": "GET", "path": "/openapi.json", "status_code": 200, "duration_ms": 2.83, "request_id": "b93b3d1b-9ef6-4b29-9ee4-0ee448ab5558", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:09:49.886856Z"}
+INFO:     127.0.0.1:59091 - "GET /openapi.json HTTP/1.1" 200 OK
+{"method": "GET", "path": "/docs", "request_id": "848acfee-b644-49db-8e78-94690a88985d", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:10.838387Z"}
+{"method": "GET", "path": "/docs", "status_code": 200, "duration_ms": 5.55, "request_id": "848acfee-b644-49db-8e78-94690a88985d", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:10.843884Z"}
+INFO:     127.0.0.1:58556 - "GET /docs HTTP/1.1" 200 OK
+{"method": "GET", "path": "/openapi.json", "request_id": "78b1bca2-8fb2-483a-ab3e-63afd6f8adf8", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:10.972841Z"}
+{"method": "GET", "path": "/openapi.json", "status_code": 200, "duration_ms": 2.16, "request_id": "78b1bca2-8fb2-483a-ab3e-63afd6f8adf8", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:10.974992Z"}
+INFO:     127.0.0.1:58556 - "GET /openapi.json HTTP/1.1" 200 OK
+{"method": "GET", "path": "/health", "request_id": "30df7304-44fb-4188-88f6-a74c9dc8cdf4", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:16.501482Z"}
+{"method": "GET", "path": "/health", "status_code": 200, "duration_ms": 5.81, "request_id": "30df7304-44fb-4188-88f6-a74c9dc8cdf4", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:16.507238Z"}
+INFO:     127.0.0.1:64394 - "GET /health HTTP/1.1" 200 OK
+{"method": "GET", "path": "/docs", "request_id": "09135366-41f1-49ad-a0fa-281f0cbea901", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:26.032394Z"}
+{"method": "GET", "path": "/docs", "status_code": 200, "duration_ms": 1.71, "request_id": "09135366-41f1-49ad-a0fa-281f0cbea901", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:26.034075Z"}
+INFO:     127.0.0.1:62228 - "GET /docs HTTP/1.1" 200 OK
+{"method": "GET", "path": "/openapi.json", "request_id": "0bdf1909-9b10-40cb-8a18-688405245e34", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:26.140867Z"}
+{"method": "GET", "path": "/openapi.json", "status_code": 200, "duration_ms": 2.95, "request_id": "0bdf1909-9b10-40cb-8a18-688405245e34", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:26.143878Z"}
+INFO:     127.0.0.1:62228 - "GET /openapi.json HTTP/1.1" 200 OK
+{"method": "GET", "path": "/health", "request_id": "b0c63f42-60a5-43cd-9257-b870c7bf6c9d", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:31.079296Z"}
+{"method": "GET", "path": "/health", "status_code": 200, "duration_ms": 16.39, "request_id": "b0c63f42-60a5-43cd-9257-b870c7bf6c9d", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:31.095676Z"}
+INFO:     127.0.0.1:62228 - "GET /health HTTP/1.1" 200 OK
+{"method": "GET", "path": "/docs", "request_id": "4c5f5c34-e6fb-4d31-93c7-a6acd195c5ef", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:36.434840Z"}
+{"method": "GET", "path": "/docs", "status_code": 200, "duration_ms": 3.27, "request_id": "4c5f5c34-e6fb-4d31-93c7-a6acd195c5ef", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:36.438215Z"}
+INFO:     127.0.0.1:53066 - "GET /docs HTTP/1.1" 200 OK
+{"method": "GET", "path": "/openapi.json", "request_id": "1606caf3-8ffc-47af-af1d-3bdcd2972efe", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:36.556329Z"}
+{"method": "GET", "path": "/openapi.json", "status_code": 200, "duration_ms": 3.27, "request_id": "1606caf3-8ffc-47af-af1d-3bdcd2972efe", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:36.557868Z"}
+INFO:     127.0.0.1:53066 - "GET /openapi.json HTTP/1.1" 200 OK
+{"method": "GET", "path": "/docs", "request_id": "1db9e849-8676-4924-acc6-d626d2b010a8", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:36.832248Z"}
+{"method": "GET", "path": "/docs", "status_code": 200, "duration_ms": 1.26, "request_id": "1db9e849-8676-4924-acc6-d626d2b010a8", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:36.833475Z"}
+INFO:     127.0.0.1:53066 - "GET /docs HTTP/1.1" 200 OK
+{"method": "GET", "path": "/openapi.json", "request_id": "14a5e41d-44b1-4848-abaf-6170d7313f02", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:36.963712Z"}
+{"method": "GET", "path": "/openapi.json", "status_code": 200, "duration_ms": 8.4, "request_id": "14a5e41d-44b1-4848-abaf-6170d7313f02", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:36.972121Z"}
+INFO:     127.0.0.1:53066 - "GET /openapi.json HTTP/1.1" 200 OK
+{"method": "GET", "path": "/docs", "request_id": "05d06b3f-e0ae-407c-9ea6-a6c4f781676a", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:37.267247Z"}
+{"method": "GET", "path": "/docs", "status_code": 200, "duration_ms": 2.33, "request_id": "05d06b3f-e0ae-407c-9ea6-a6c4f781676a", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:37.269575Z"}
+INFO:     127.0.0.1:53066 - "GET /docs HTTP/1.1" 200 OK
+{"method": "GET", "path": "/openapi.json", "request_id": "3301339f-c367-48cf-a646-cd3267c4fdc0", "event": "request_started", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:37.397916Z"}
+{"method": "GET", "path": "/openapi.json", "status_code": 200, "duration_ms": 1.3, "request_id": "3301339f-c367-48cf-a646-cd3267c4fdc0", "event": "request_completed", "level": "info", "logger": "app.middleware.logging", "timestamp": "2026-08-23T11:18:37.399193Z"}
+INFO:     127.0.0.1:53066 - "GET /openapi.json HTTP/1.1" 200 OK
