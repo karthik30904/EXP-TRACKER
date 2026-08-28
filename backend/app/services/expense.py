@@ -67,9 +67,20 @@ class ExpenseService:
         return ExpenseResponse.model_validate(expense)
 
     def create_expense(
-        self, data: ExpenseCreate, current_user: UserResponse | None = None
+        self,
+        data: ExpenseCreate,
+        current_user: UserResponse | None = None,
+        target_user_id: UUID | None = None,
     ) -> ExpenseResponse:
-        user_id = current_user.id if current_user is not None else DEFAULT_USER_ID
+        user_id = DEFAULT_USER_ID
+        if current_user is not None:
+            if current_user.role == UserRole.ADMIN and target_user_id is not None:
+                user_id = target_user_id
+            else:
+                user_id = current_user.id
+        elif target_user_id is not None:
+            user_id = target_user_id
+
         expense = self.repository.create_expense(data, user_id)
         return ExpenseResponse.model_validate(expense)
 

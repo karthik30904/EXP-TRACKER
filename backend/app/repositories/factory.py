@@ -4,10 +4,9 @@ from app.core.config import settings
 from app.core.logging import get_logger
 from app.repositories.base import ExpenseRepository
 from app.repositories.memory import expense_repository as memory_expense_repository
-from app.repositories.users import (
-    UserRepository,
-    create_sqlalchemy_user_repository,
-    user_repository as memory_user_repository,
+from app.repositories.user import (
+    get_user_repository,
+    user_repository,
 )
 
 logger = get_logger(__name__)
@@ -54,16 +53,5 @@ def get_expense_repository() -> ExpenseRepository:
 expense_repository = get_expense_repository()
 
 
-def _build_user_repository() -> UserRepository:
-    if settings.use_database:
-        try:
-            repository = create_sqlalchemy_user_repository(settings.database_url)
-        except ModuleNotFoundError:
-            logger.warning("sqlalchemy_user_repo_unavailable_falling_back_to_memory")
-        else:
-            if repository is not None:
-                return repository
-    return memory_user_repository
+user_repository = get_user_repository()
 
-
-user_repository = _build_user_repository()

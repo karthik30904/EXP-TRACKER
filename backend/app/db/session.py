@@ -20,7 +20,10 @@ except ModuleNotFoundError:  # pragma: no cover - optional until dependencies ar
 def get_engine() -> Engine | None:
     if create_engine is None or not settings.database_url:
         return None
-    return create_engine(settings.database_url, pool_pre_ping=True, future=True)
+    try:
+        return create_engine(settings.database_url, pool_pre_ping=True, future=True)
+    except Exception:
+        return None
 
 
 @lru_cache(maxsize=1)

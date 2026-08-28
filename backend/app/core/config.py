@@ -16,9 +16,23 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 1440
 
+    # Email & SMTP Settings
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from_email: str = "noreply@finsight.local"
+    smtp_from_name: str = "FIN$ight Expense Tracker"
+    smtp_tls: bool = True
+    otp_expire_minutes: int = 10
+    max_otp_attempts: int = 5
+    max_login_attempts: int = 5
+    lockout_minutes: int = 15
+
     @property
     def cors_origins_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
 
 
 settings = Settings()
+

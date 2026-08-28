@@ -4,15 +4,15 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from app.models.expense import Base
+from app.db.base import Base
 from app.schemas.auth import UserRole
 
 try:
     from sqlalchemy import Boolean, DateTime, Enum as SAEnum, String, func
-    from sqlalchemy.orm import Mapped, mapped_column
+    from sqlalchemy.orm import Mapped, mapped_column, relationship
 except ModuleNotFoundError:  # pragma: no cover
     Mapped = Any  # type: ignore[misc,assignment]
-    mapped_column = None  # type: ignore[assignment]
+    mapped_column = relationship = None  # type: ignore[assignment]
     Boolean = DateTime = String = SAEnum = func = None  # type: ignore[assignment]
 
 
@@ -39,3 +39,6 @@ class User(Base):
         updated_at = mapped_column(
             DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now()
         )
+        if relationship is not None:
+            expenses = relationship("Expense", back_populates="owner", cascade="all, delete-orphan")
+
