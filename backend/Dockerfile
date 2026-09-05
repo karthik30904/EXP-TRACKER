@@ -29,5 +29,5 @@ ENV PORT=8001
 
 EXPOSE 8001
 
-# Start script: run migrations then start uvicorn on dynamic $PORT
-CMD ["sh", "-c", "uv run alembic upgrade head || true; exec uv run uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8001}"]
+# Start script: run migrations & seed demo data then start uvicorn on dynamic $PORT
+CMD ["sh", "-c", "uv run alembic upgrade head || true; uv run python seed_db.py || true; exec uv run uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8001}"]

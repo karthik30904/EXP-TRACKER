@@ -24,9 +24,11 @@ app = FastAPI(
     debug=settings.debug,
 )
 
+# Robust CORS middleware supporting Vercel and local development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins_list,
+    allow_origins=settings.cors_origins_list + ["*"],
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -62,6 +64,7 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
         status_code=exc.status_code,
         detail=exc.detail,
         request_id=request_id,
+        path=request.url.path,
     )
     return JSONResponse(
         status_code=exc.status_code,
@@ -74,34 +77,23 @@ async def validation_exception_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
     request_id = getattr(request.state, "request_id", "unknown")
-    logger.warning(
-        "validation_error",
-        errors=exc.errors(),
-        request_id=request_id,
-    )
+    errors = jsonable_encoder(exc.errors())
+    logger.warning("validation_error", errors=errors, request_id=request_id, path=request.url.path)
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content={
-            "detail": jsonable_encoder(exc.errors()),
-            "request_id": request_id,
-            "type": "ValidationError",
-        },
+        content={"detail": errors, "request_id": request_id, "type": "ValidationError"},
     )
 
 
 @app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     request_id = getattr(request.state, "request_id", "unknown")
-    logger.exception(
-        "unhandled_exception",
-        error=str(exc),
-        request_id=request_id,
-    )
+    logger.exception("unhandled_server_error", error=str(exc), request_id=request_id)
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={
-            "detail": "Internal server error",
+            "detail": "Internal Server Error",
             "request_id": request_id,
-            "type": type(exc).__name__,
+            "type": "InternalServerError",
         },
     )
