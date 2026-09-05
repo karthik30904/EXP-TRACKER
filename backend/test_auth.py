@@ -161,9 +161,41 @@ def run_tests() -> None:
     status, _ = request("GET", "/api/v1/auth/users", token=alice_token)
     assert_eq("Regular user is blocked from /auth/users (403)", status, 403)
 
-    # Clean up Alice's expense
-    status, _ = request("DELETE", f"/api/v1/expenses/{alice_expense_id}", token=alice_token)
-    assert_eq("Alice expense deleted (204)", status, 204)
+    # 11. Profile Update
+    print("\n11. Profile Update (/auth/profile)")
+    status, updated_profile = request(
+        "PATCH",
+        "/api/v1/auth/profile",
+        {"full_name": "Alice Updated", "current_password": "Password123!", "new_password": "NewPassword123!"},
+        token=alice_token,
+    )
+    assert_eq("Profile update returns 200", status, 200)
+    assert_eq("Profile updated name matches", updated_profile["full_name"], "Alice Updated")
+
+    # Login with new password
+    status, relogin = request("POST", "/api/v1/auth/login", {"email": unique_email, "password": "NewPassword123!"})
+    assert_eq("Login with new password works", status, 200)
+
+    # 12. Admin Scoped Access to Specific User's Expenses
+    print("\n12. Admin Scoped User Filtering")
+    # Admin creates an expense for Alice
+    status, admin_for_alice = request(
+        "POST",
+        f"/api/v1/expenses?user_id={alice_id}",
+        {"amount": "99.99", "description": "Admin created for Alice", "category": "bills", "date": "2026-08-25"},
+        token=admin_token,
+    )
+    assert_eq("Admin created expense for Alice", status, 201)
+    admin_alice_exp_id = admin_for_alice["id"]
+
+    # Admin filters expenses strictly for Alice
+    status, alice_scoped_expenses = request("GET", f"/api/v1/expenses?user_id={alice_id}", token=admin_token)
+    assert_eq("Admin gets Alice scoped expenses", status, 200)
+    assert_true("Includes Alice's expense", any(e["id"] == admin_alice_exp_id for e in alice_scoped_expenses))
+
+    # Clean up expenses
+    request("DELETE", f"/api/v1/expenses/{alice_expense_id}", token=alice_token)
+    request("DELETE", f"/api/v1/expenses/{admin_alice_exp_id}", token=admin_token)
 
     # Final summary
     print(f"\n=========================================")
@@ -173,7 +205,7 @@ def run_tests() -> None:
             print(f"  {err}")
         sys.exit(1)
     else:
-        print("All Phase 3 Auth and RBAC tests PASSED!")
+        print("All Phase 3 Auth, RBAC, and Profile tests PASSED!")
 
 
 if __name__ == "__main__":

@@ -56,3 +56,28 @@ class SummaryResponse(BaseModel):
     by_category: list[CategorySummary]
     period_start: Date | None = None
     period_end: Date | None = None
+
+
+class InsightItem(BaseModel):
+    id: str
+    type: str  # "warning" | "opportunity" | "positive" | "recurring" | "projection"
+    title: str
+    description: str
+    metric: str | None = None
+    category: ExpenseCategory | None = None
+    action_label: str | None = None
+    action_type: str | None = None
+
+
+class InsightsResponse(BaseModel):
+    safe_daily_spend: Decimal
+    projected_month_end_spend: Decimal
+    remaining_days: int
+    remaining_budget: Decimal
+    monthly_budget: Decimal
+    burn_rate_status: str  # "optimal" | "high_velocity" | "critical" | "under_budget"
+    needs_percent: int
+    wants_percent: int
+    savings_buffer_percent: int
+    recommendations: list[InsightItem]
+

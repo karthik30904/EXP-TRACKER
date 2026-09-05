@@ -15,11 +15,9 @@ from app.core.security import hash_password
 from app.db.session import get_engine, get_session_factory
 from app.models.expense import Base, Expense
 from app.models.user import User
-from app.repositories.memory import _seed_expenses
+from app.repositories.seed_data import DEFAULT_ADMIN_ID, DEFAULT_USER_ID, get_seed_expenses
 from app.schemas.auth import UserRole
 
-DEFAULT_USER_ID = "00000000-0000-0000-0000-000000000001"
-DEFAULT_ADMIN_ID = "00000000-0000-0000-0000-000000000002"
 
 
 def seed() -> None:
@@ -40,7 +38,7 @@ def seed() -> None:
         existing_user = session.query(User).filter(User.email == "user@example.com").first()
         if existing_user is None:
             demo_user = User(
-                id=DEFAULT_USER_ID,
+                id=str(DEFAULT_USER_ID),
                 email="user@example.com",
                 hashed_password=hash_password("User123!"),
                 full_name="Demo User",
@@ -56,7 +54,7 @@ def seed() -> None:
         existing_admin = session.query(User).filter(User.email == "admin@example.com").first()
         if existing_admin is None:
             demo_admin = User(
-                id=DEFAULT_ADMIN_ID,
+                id=str(DEFAULT_ADMIN_ID),
                 email="admin@example.com",
                 hashed_password=hash_password("Admin123!"),
                 full_name="Demo Admin",
@@ -73,7 +71,7 @@ def seed() -> None:
         try:
             exp_count = session.execute(text("SELECT count(*) FROM expenses")).scalar() or 0
             if exp_count == 0:
-                seeds = _seed_expenses()
+                seeds = get_seed_expenses(now)
                 for item in seeds:
                     session.add(
                         Expense(
@@ -82,7 +80,7 @@ def seed() -> None:
                             description=item["description"],
                             category=item["category"],
                             date=item["date"],
-                            user_id=DEFAULT_USER_ID,
+                            user_id=str(DEFAULT_USER_ID),
                             created_at=now,
                             updated_at=now,
                         )

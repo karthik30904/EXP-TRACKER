@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "expense-tracker": {
+      "command": "node",
+      "args": [
+        "c:/AI_DOMAIN/EXP-TRACKER/EXP-TRACKER/mcp-server/dist/index.js"
+      ],
+      "env": {
+        "EXPENSE_API_BASE_URL": "http://127.0.0.1:8000",
+        "EXPENSE_API_EMAIL": "user@example.com",
+        "EXPENSE_API_PASSWORD": "password123"
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: expense_tracker_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: expense_tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d expense_tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: expense_tracker_backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgrespassword@db:5432/expense_tracker
+      USE_DATABASE: "true"
+      CORS_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000"
+      JWT_SECRET_KEY: "change-this-jwt-secret-in-production-long-random-string"
+      LOG_LEVEL: "INFO"
+      DEBUG: "false"
+      FRONTEND_URL: "http://localhost:3000"
+    ports:
+      - "8001:8001"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8001
+    container_name: expense_tracker_frontend
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8001
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:

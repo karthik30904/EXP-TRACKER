@@ -32,10 +32,11 @@ def list_expenses(
 @router.post("", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
 def create_expense(
     data: ExpenseCreate,
+    user_id: UUID | None = Query(default=None, description="Assign to user ID (Admin only)"),
     current_user: UserResponse = Depends(get_current_user),
 ) -> ExpenseResponse:
-    """Create a new expense owned by the authenticated user."""
-    return expense_service.create_expense(data, current_user=current_user)
+    """Create a new expense owned by the authenticated user (or specified user for admins)."""
+    return expense_service.create_expense(data, current_user=current_user, target_user_id=user_id)
 
 
 @router.get("/{expense_id}", response_model=ExpenseResponse)

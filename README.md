@@ -8,14 +8,15 @@ Full-stack expense tracking app: FastAPI backend, Next.js frontend, PostgreSQL, 
 |-------|-------|-------|--------|
 | **1** | Backend API + Observability | FastAPI, 6 endpoints, Swagger, structlog, request tracing | Complete |
 | **2** | UI + Database | Next.js dashboard (list/create/edit/summary), SQLAlchemy repository, Alembic initial migration, database readiness health check | Complete — deployment verification pending |
-| **3** | Integration, Auth & RBAC | Wire frontend↔API↔DB, JWT login, admin/user roles | Pending |
-| **4** | MCP Server | Node.js MCP adapter, API key auth, Cursor config | Pending |
+| **3** | Integration, Auth & RBAC | Wire frontend↔API↔DB, JWT login, admin/user roles | Complete |
+| **4** | MCP Server | Node.js/TS MCP server, dual transports (stdio + SSE), Cursor/Claude/ChatGPT integration | Complete |
 
 Phase notes:
 - [Phase 1 document](docs/Phase1_doc.md)
 - [Phase 2 document](docs/phase2_doc.md)
-- [Project explanation](project_expkanation.md)
-- [Codex guide](docs/codex.md)
+- [Phase 3 document](docs/phase3_doc.md)
+- [MCP Server Integrator Guide](docs/MCP_Server_Integrator.md)
+- [Project explanation](project_explanation.md)
 
 ## Architecture
 

@@ -86,6 +86,23 @@ class MemoryUserRepository:
     def list_users(self) -> list[dict]:
         return [user.copy() for user in self._users.values()]
 
+    def update_user_profile(
+        self,
+        user_id: UUID,
+        *,
+        full_name: str | None = None,
+        hashed_password: str | None = None,
+    ) -> dict | None:
+        user = self._users.get(_to_uuid(user_id))
+        if user is None:
+            return None
+        if full_name is not None:
+            user["full_name"] = full_name
+        if hashed_password is not None:
+            user["hashed_password"] = hashed_password
+        user["updated_at"] = datetime.now(UTC)
+        return user.copy()
+
 
 class SQLAlchemyUserRepository:
     def __init__(self, database_url: str) -> None:
@@ -163,6 +180,28 @@ class SQLAlchemyUserRepository:
             query = select(User).order_by(User.created_at.asc())
             results = session.execute(query).scalars().all()
             return [self._to_dict(user) for user in results]
+
+    def update_user_profile(
+        self,
+        user_id: UUID,
+        *,
+        full_name: str | None = None,
+        hashed_password: str | None = None,
+    ) -> dict | None:
+        from app.models.user import User
+
+        with self._get_session() as session:
+            user = session.get(User, str(user_id))
+            if user is None:
+                return None
+            if full_name is not None:
+                user.full_name = full_name
+            if hashed_password is not None:
+                user.hashed_password = hashed_password
+            user.updated_at = datetime.now(UTC)
+            session.commit()
+            session.refresh(user)
+            return self._to_dict(user)
 
 
 memory_user_repository = MemoryUserRepository()

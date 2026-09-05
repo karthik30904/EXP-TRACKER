@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.class
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite3
+*.log
+*.err
+.pytest_cache/
+.uv-cache/
+.uv-runtime-cache/
+.git/
+.cursor/
