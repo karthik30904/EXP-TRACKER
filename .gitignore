@@ -1,24 +1,57 @@
+# Environment & Secret Files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+!*.env.example
+
 # Python
 __pycache__/
 *.py[cod]
+*.class
 *.egg-info/
+.installed.cfg
+*.egg
 .venv/
 venv/
-.env
+ENV/
+.pytest_cache/
+.uv-cache/
+.uv-runtime-cache/
 
-# Node
+# Node & Next.js
 node_modules/
 .next/
 out/
+.npm-cache/
+*.tsbuildinfo
+next-env.d.ts
 
-# IDE
-.idea/
-.vscode/
-*.swp
+# Logs and runtime traces
+*.log
+*.err
+runtime-*.log
+runtime-*.err
+server.log
+server.err
 
-# OS
+# Databases & local stores
+*.db
+*.sqlite
+*.sqlite3
+expenses.db
+
+# OS Files
 .DS_Store
 Thumbs.db
 
-# Database
-*.db
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+.docker/

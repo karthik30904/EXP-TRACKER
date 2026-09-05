@@ -46,6 +46,30 @@ type Summary = {
   by_category: SummaryItem[];
 };
 
+type InsightItem = {
+  id: string;
+  type: "warning" | "opportunity" | "positive" | "recurring" | "projection";
+  title: string;
+  description: string;
+  metric?: string | null;
+  category?: ExpenseCategory | null;
+  action_label?: string | null;
+  action_type?: string | null;
+};
+
+type InsightsResponse = {
+  safe_daily_spend: string;
+  projected_month_end_spend: string;
+  remaining_days: number;
+  remaining_budget: string;
+  monthly_budget: string;
+  burn_rate_status: "optimal" | "high_velocity" | "critical" | "under_budget";
+  needs_percent: number;
+  wants_percent: number;
+  savings_buffer_percent: number;
+  recommendations: InsightItem[];
+};
+
 type TabType = "welcome" | "history" | "kpis" | "statistics" | "settings";
 type ThemeType = "light" | "dark" | "slate" | "neon";
 
@@ -124,6 +148,70 @@ function getInitials(fullName?: string | null, email?: string): string {
   return "U";
 }
 
+const FLOATING_MONEY_ITEMS = [
+  { symbol: "₹", top: "8%", left: "6%", size: "52px", colorClass: "gold", delay: "0s", duration: "8s" },
+  { symbol: "$", top: "18%", left: "90%", size: "58px", colorClass: "emerald", delay: "1.5s", duration: "9s" },
+  { symbol: "€", top: "72%", left: "5%", size: "46px", colorClass: "cyan", delay: "2.8s", duration: "7.5s" },
+  { symbol: "£", top: "80%", left: "91%", size: "50px", colorClass: "gold", delay: "0.5s", duration: "10s" },
+  { symbol: "₿", top: "42%", left: "12%", size: "42px", colorClass: "gold", delay: "3.2s", duration: "8.5s" },
+  { symbol: "₹", top: "88%", left: "46%", size: "64px", colorClass: "cyan", delay: "1.2s", duration: "9s" },
+  { symbol: "📈", top: "14%", left: "76%", size: "36px", colorClass: "emerald", delay: "2s", duration: "7s" },
+  { symbol: "💎", top: "54%", left: "84%", size: "38px", colorClass: "purple", delay: "0.8s", duration: "6.5s" },
+  { symbol: "$", top: "6%", left: "40%", size: "44px", colorClass: "emerald", delay: "3.8s", duration: "10.5s" },
+  { symbol: "🪙", top: "36%", left: "95%", size: "34px", colorClass: "gold", delay: "1.8s", duration: "8s" },
+  { symbol: "₹", top: "62%", left: "30%", size: "48px", colorClass: "emerald", delay: "2.2s", duration: "9.2s" },
+];
+
+function GlowingMoneyBackground() {
+  const [mousePos, setMousePos] = useState({ x: -600, y: -600 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  return (
+    <div className="glowing-money-viewport" aria-hidden="true">
+      {/* Radiant Glowing Light Blobs */}
+      <div className="money-glow-orb orb-gold" style={{ top: "-15%", left: "10%", width: "580px", height: "580px" }} />
+      <div className="money-glow-orb orb-emerald" style={{ top: "35%", right: "-10%", width: "640px", height: "640px", animationDelay: "-4s" }} />
+      <div className="money-glow-orb orb-cyan" style={{ bottom: "-20%", left: "25%", width: "550px", height: "550px", animationDelay: "-8s" }} />
+      <div className="money-glow-orb orb-neon" style={{ top: "20%", left: "-12%", width: "480px", height: "480px", animationDelay: "-6s" }} />
+
+      {/* Geometric Financial Hologram Grid */}
+      <div className="finance-grid-overlay" />
+
+      {/* Floating Animated Money & Currency Symbols */}
+      {FLOATING_MONEY_ITEMS.map((item, idx) => (
+        <span
+          key={idx}
+          className={`floating-currency-symbol ${item.colorClass}`}
+          style={{
+            top: item.top,
+            left: item.left,
+            fontSize: item.size,
+            animationDelay: item.delay,
+            animationDuration: item.duration,
+          }}
+        >
+          {item.symbol}
+        </span>
+      ))}
+
+      {/* Interactive Cursor Spotlight Glow */}
+      <div
+        className="cursor-glow-halo"
+        style={{
+          transform: `translate3d(${mousePos.x}px, ${mousePos.y}px, 0)`,
+        }}
+      />
+    </div>
+  );
+}
+
 export default function HomePage() {
   // Navigation & SPA State
   const [activeTab, setActiveTab] = useState<TabType>("welcome");
@@ -155,6 +243,7 @@ export default function HomePage() {
   // App data state
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
+  const [insights, setInsights] = useState<InsightsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -268,6 +357,7 @@ export default function HomePage() {
     try {
       let expUrl = `${API_BASE_URL}/api/v1/expenses`;
       let sumUrl = `${API_BASE_URL}/api/v1/stats/summary`;
+      let insUrl = `${API_BASE_URL}/api/v1/stats/insights?monthly_budget=${monthlyBudget}`;
 
       // Strict scoping: if admin, apply target user ID
       const effectiveUserId =
@@ -276,11 +366,13 @@ export default function HomePage() {
       if (effectiveUserId) {
         expUrl += `?user_id=${effectiveUserId}`;
         sumUrl += `?user_id=${effectiveUserId}`;
+        insUrl += `&user_id=${effectiveUserId}`;
       }
 
-      const [expensesResponse, summaryResponse] = await Promise.all([
+      const [expensesResponse, summaryResponse, insightsResponse] = await Promise.all([
         fetchWithAuth(expUrl, { signal: controller.signal }),
         fetchWithAuth(sumUrl, { signal: controller.signal }),
+        fetchWithAuth(insUrl, { signal: controller.signal }).catch(() => null),
       ]);
 
       if (expensesResponse.status === 401 || summaryResponse.status === 401) {
@@ -299,6 +391,10 @@ export default function HomePage() {
 
       setExpenses((await expensesResponse.json()) as Expense[]);
       setSummary((await summaryResponse.json()) as Summary);
+
+      if (insightsResponse && insightsResponse.ok) {
+        setInsights((await insightsResponse.json()) as InsightsResponse);
+      }
     } catch (fetchError) {
       console.error("loadData error:", fetchError);
       const message =
@@ -812,6 +908,24 @@ export default function HomePage() {
     document.body.removeChild(link);
   }
 
+  // Handle 1-click Insight Quick Actions
+  function handleInsightAction(actionType?: string | null, category?: ExpenseCategory | null) {
+    if (!actionType) return;
+    if (actionType === "jump_history" || actionType.startsWith("filter_")) {
+      setActiveTab("history");
+      if (category) {
+        setHistoryCategory(category);
+      } else if (actionType.startsWith("filter_")) {
+        const cat = actionType.replace("filter_", "");
+        setHistoryCategory(cat);
+      }
+    } else if (actionType === "jump_kpis" || actionType === "safe_limit") {
+      setActiveTab("kpis");
+    } else if (actionType === "jump_stats") {
+      setActiveTab("statistics");
+    }
+  }
+
   // Profile update submission
   async function handleProfileSave(e: FormEvent) {
     e.preventDefault();
@@ -865,7 +979,9 @@ export default function HomePage() {
   // If not logged in, render the Auth view
   if (!currentUser) {
     return (
-      <main className="shell">
+      <>
+        <GlowingMoneyBackground />
+        <main className="shell">
         <header className="navbar">
           <div className="brand">
             <span className="brand-icon">₹</span>
@@ -1281,12 +1397,15 @@ export default function HomePage() {
           </article>
         </section>
       </main>
+      </>
     );
   }
 
   // Authenticated Futuristic Dashboard
   return (
-    <main className="shell">
+    <>
+      <GlowingMoneyBackground />
+      <main className="shell">
       {/* Top Navbar with Username, Role, Command Palette Trigger, and Theme */}
       <header className="navbar">
         <div className="brand">
@@ -1503,6 +1622,77 @@ export default function HomePage() {
               </article>
             </div>
           </section>
+
+          {/* Smart Financial Advisor & Actionable Recommendations */}
+          {insights && (
+            <section className="advisor-card">
+              <div className="advisor-header">
+                <div>
+                  <h3 style={{ margin: 0, fontSize: "18px", display: "flex", alignItems: "center", gap: "8px" }}>
+                    ⚡ FIN$ight Smart Advisor & Recommendations
+                  </h3>
+                  <p style={{ margin: "4px 0 0", color: "var(--muted)", fontSize: "13px" }}>
+                    Real-time AI analysis of spending velocity, safe daily limit, 50/30/20 balance, and savings targets.
+                  </p>
+                </div>
+
+                <div className="advisor-pill-group">
+                  <div className="safe-spend-badge" title="Daily safe spend limit to stay within monthly budget">
+                    <span>🎯 Safe Daily Spend:</span>
+                    <strong>{formatMoney(insights.safe_daily_spend, currency)}/day</strong>
+                  </div>
+                  <div className="runway-badge">
+                    ⏳ {insights.remaining_days} days left
+                  </div>
+                  <div className="runway-badge" style={{ color: insights.burn_rate_status === "critical" ? "#ef4444" : insights.burn_rate_status === "high_velocity" ? "#f59e0b" : "#10b981" }}>
+                    ⚡ Status: {insights.burn_rate_status.replace("_", " ").toUpperCase()}
+                  </div>
+                </div>
+              </div>
+
+              {/* 50/30/20 Rule Ratio Bar */}
+              <div className="ratio-bar-wrapper">
+                <div className="ratio-bar-header">
+                  <span>50/30/20 Rule: <strong>Needs {insights.needs_percent}%</strong> (Target: ≤50%)</span>
+                  <span><strong>Wants {insights.wants_percent}%</strong> (Target: ≤30%)</span>
+                  <span><strong>Savings/Buffer {insights.savings_buffer_percent}%</strong></span>
+                </div>
+                <div className="ratio-bar-track">
+                  <div className="ratio-bar-needs" style={{ width: `${insights.needs_percent}%` }} title={`Needs: ${insights.needs_percent}%`} />
+                  <div className="ratio-bar-wants" style={{ width: `${insights.wants_percent}%` }} title={`Wants: ${insights.wants_percent}%`} />
+                  <div className="ratio-bar-savings" style={{ width: `${insights.savings_buffer_percent}%` }} title={`Savings Buffer: ${insights.savings_buffer_percent}%`} />
+                </div>
+              </div>
+
+              {/* Recommendations Grid */}
+              {insights.recommendations.length > 0 ? (
+                <div className="insights-grid">
+                  {insights.recommendations.map((rec) => (
+                    <div key={rec.id} className={`insight-card ${rec.type}`}>
+                      <div>
+                        <div className="insight-card-top">
+                          <h4 className="insight-card-title">{rec.title}</h4>
+                          {rec.metric && <span className="insight-card-metric">{rec.metric}</span>}
+                        </div>
+                        <p className="insight-card-desc">{rec.description}</p>
+                      </div>
+                      {rec.action_label && (
+                        <button
+                          type="button"
+                          className="insight-action-btn"
+                          onClick={() => handleInsightAction(rec.action_type, rec.category)}
+                        >
+                          {rec.action_label} →
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="notice">Log a few expenses to generate personalized recommendations.</p>
+              )}
+            </section>
+          )}
 
           {/* Main Grid: Quick Add & Recent Records */}
           <section className="main-grid">
@@ -1904,6 +2094,46 @@ export default function HomePage() {
             </div>
           </article>
 
+          {/* Smart Insights & Optimization Recommendations */}
+          {insights && insights.recommendations.length > 0 && (
+            <article className="panel" style={{ marginBottom: "24px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <h3 style={{ margin: 0 }}>💡 AI Recommendations & Actionable Insights</h3>
+                  <p style={{ margin: "4px 0 0", color: "var(--muted)", fontSize: "14px" }}>
+                    Automated analysis of discretionary wants, top category concentrations, and projected month-end surplus.
+                  </p>
+                </div>
+                <span className="safe-spend-badge">
+                  🎯 Safe Daily Limit: {formatMoney(insights.safe_daily_spend, currency)}
+                </span>
+              </div>
+
+              <div className="insights-grid" style={{ marginTop: "16px" }}>
+                {insights.recommendations.map((rec) => (
+                  <div key={rec.id} className={`insight-card ${rec.type}`}>
+                    <div>
+                      <div className="insight-card-top">
+                        <h4 className="insight-card-title">{rec.title}</h4>
+                        {rec.metric && <span className="insight-card-metric">{rec.metric}</span>}
+                      </div>
+                      <p className="insight-card-desc">{rec.description}</p>
+                    </div>
+                    {rec.action_label && (
+                      <button
+                        type="button"
+                        className="insight-action-btn"
+                        onClick={() => handleInsightAction(rec.action_type, rec.category)}
+                      >
+                        {rec.action_label} →
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </article>
+          )}
+
           {/* Target Budget Adjuster */}
           <article className="panel">
             <h3>🎯 Target Budget Adjuster</h3>
@@ -2262,5 +2492,6 @@ export default function HomePage() {
         </div>
       )}
     </main>
+    </>
   );
 }
