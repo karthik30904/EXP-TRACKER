@@ -19,13 +19,15 @@ COPY pyproject.toml uv.lock* ./
 RUN uv sync --frozen --no-cache || uv sync --no-cache
 
 # Place virtual environment in PATH
-ENV PATH="/app/.venv/bin:"
+ENV PATH="/app/.venv/bin:$PATH"
 
 # Copy backend source code
 COPY . .
 
-# Expose FastAPI port
+# Default port
+ENV PORT=8001
+
 EXPOSE 8001
 
-# Run entrypoint script or directly run uvicorn
-CMD ["sh", "-c", "uv run alembic upgrade head && uv run uvicorn app.main:app --host 0.0.0.0 --port 8001"]
+# Start script: run migrations then start uvicorn on dynamic $PORT
+CMD ["sh", "-c", "uv run alembic upgrade head || true; exec uv run uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8001}"]
